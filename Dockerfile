@@ -10,21 +10,7 @@ COPY kalitorify /tmp/kalitorify
 COPY excludes /etc/dpkg/dpkg.cfg.d/
 
 # Base system plus nano, lynx, tor and kalitorify
-RUN adduser --quiet --add_extra_groups --disabled-password --gecos \"\" kali && \
-    adduser kali sudo && \
-    echo "kali:kali" | chpasswd && \
-    echo "root:kali" | chpasswd && \
-    apt-get update && \
-    apt-get install --no-install-suggests -y \
-        nano \
-        lynx \
-        tor \
-        make \
-        kali-linux-wsl \
-        iptables \
-        inetutils-ping \
-        inetutils-traceroute && \
-    apt-get clean && \
+
     cd /tmp/kalitorify && make install
 
 # Desktop
