@@ -7,7 +7,7 @@ services:
       - NET_ADMIN
       - NET_RAW
     ports:
-      - 33389:3389
+      - 13389:3389
     volumes:
       - ./kali/kali:/home/kali
       - ./kali/root:/root
@@ -16,6 +16,3 @@ services:
     container_name: vulnerable
     image: ghcr.io/amitie10g/kali-rolling:labs
     restart: always
-    ports:
-      - 42000:42000
-      - 42001:42001
