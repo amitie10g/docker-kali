@@ -83,7 +83,7 @@ Images are pushed weekly, monday at 12:00 UTC, leaving a margin for pushing imag
 The image depends on a Kali Linux base image built using the instructions on the [Phusion's base image](https://github.com/phusion/baseimage-docker) repo. Use the ``latest`` tag when building larger images on your Dockerfile.
 ```
 FROM ghcr.io/amitie10g/kali-rolling:latest
-RUN apt-get install -y kali-tools-large && apt-get clean && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y kali-tools-large && apt-get clean && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 COPY init/ /etc/my_init.d/
 WORKDIR /root
 ```
