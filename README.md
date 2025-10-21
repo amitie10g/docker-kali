@@ -91,7 +91,7 @@ WORKDIR /root
 Then, run:
 
 ```
-docker build --build-arg KALI_VER=<version> -t kali-linux:large .
+docker build --build-arg -t kali-linux:large .
 ```
 
 Where build arg,
