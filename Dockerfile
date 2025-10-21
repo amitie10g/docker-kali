@@ -40,6 +40,14 @@ FROM desktop-top10-build AS tool-build
 ARG TOOL=exploitation
 RUN apt-get install -y kali-tools-$TOOL && apt-get clean
 
+# Large metapackage
+FROM desktop-top10-build AS large-build
+RUN apt-get install -y kali-tools-large && apt-get clean
+
+# Full metapackage
+FROM large-build AS full-build
+RUN apt-get install -y kali-tools-large && apt-get clean
+
 # Vulnerable webapps
 FROM base-build AS labs-build
 RUN apt-get install -y kali-linux-labs && apt-get clean && \
@@ -89,3 +97,14 @@ FROM tool-build AS tool
 COPY init/ /etc/my_init.d/
 RUN rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 WORKDIR /root
+
+FROM large-build AS large
+COPY init/ /etc/my_init.d/
+RUN rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+WORKDIR /root
+
+FROM full-build AS full
+COPY init/ /etc/my_init.d/
+RUN rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+WORKDIR /root
+
