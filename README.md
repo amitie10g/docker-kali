@@ -65,13 +65,13 @@ Images are pushed weekly, monday at 12:00 UTC, leaving a margin for pushing imag
 
 ## Usage
 
-* Just download ``docker-compose.yml``, place at an empty directory, and run ``docker-compose up -d``. This will start the ``latest`` and ``labs`` containers (if you use Windows, be sure to replace the incoming port to 13389 do avoid conflicts with the local Remote Desktop port).
+* Just download ``docker-compose.yml``, place at an empty directory, and run ``docker-compose up -d``. This will start the ``latest`` and ``labs`` containers (if you use Windows, be sure to use another RDP port like 13389 to avoid conflicts with the local RDP port).
 
 * Access the shell: ``docker exec -it --user kali desktop bash`` (omit ``--user kali`` to acces as root).
 
-* Connect to the desktop environment using your Remote Desktop client. Available users are ``root`` and ``kali`` (password is ``kali`` for both). You may use the ``root`` username when running GUI apps that require root permissions.
+* Connect to the desktop environment using your Remote Desktop client. Available users are ``root`` and ``kali`` (password is ``kali`` for both). Just use ``root`` username.
 
-* Inside the Desktop environment, browse the vulnerble webapps at the Vulnerable container:
+* Inside the Desktop environment, browse the vulnerable webapps at the Vulnerable container:
   * http://vulnerable:42000 OWASP Juice Shop.
   * http://vulnerable:42001 Damn Vulnerable Web Application.
 
@@ -80,10 +80,18 @@ Images are pushed weekly, monday at 12:00 UTC, leaving a margin for pushing imag
 **Note**: Due to limitations related to file permissions on mounted volumes on **rootless Podman**, you need to connect to the instance (via console or RDP) using the ``root`` account.
 
 ## Building
-The image depends on a Kali Linux base image built using the instructions on the [Phusion's base image](https://github.com/phusion/baseimage-docker) repo.
+The image depends on a Kali Linux base image built using the instructions on the [Phusion's base image](https://github.com/phusion/baseimage-docker) repo. Use the ``latest`` tag when building larger images on your Dockerfile.
+```
+FROM ghcr.io/amitie10g/kali-rolling:latest
+RUN apt-get install -y kali-tools-large && apt-get clean && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+COPY init/ /etc/my_init.d/
+WORKDIR /root
+```
+
+Then, run:
 
 ```
-docker build --build-arg KALI_VER=<version> --build-arg TOOL=<tool> --target <target> -t amitie10g/kali-linux:<tag> .
+docker build --build-arg KALI_VER=<version> -t kali-linux:large .
 ```
 
 Where build arg,
