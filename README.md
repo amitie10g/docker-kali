@@ -63,6 +63,8 @@ Images are pushed weekly, monday at 12:00 UTC, leaving a margin for pushing imag
   * [``kali-tools-windows-resources``](https://www.kali.org/tools/kali-meta/#kali-tools-windows-resources)
   * [``kali-tools-wireless``](https://www.kali.org/tools/kali-meta/#kali-tools-wireless)
 
+* ``kali-linux-large`` and ``kali-linux-everything`` aren't available as them produces laaaaarge images. You may want to build them by yourself (see below).
+
 ## Usage
 
 * Just download ``docker-compose.yml``, place at an empty directory, and run ``docker-compose up -d``. This will start the ``latest`` and ``labs`` containers (if you use Windows, be sure to use another RDP port like 13389 to avoid conflicts with the local RDP port).
@@ -83,7 +85,7 @@ Images are pushed weekly, monday at 12:00 UTC, leaving a margin for pushing imag
 The image depends on a Kali Linux base image built using the instructions on the [Phusion's base image](https://github.com/phusion/baseimage-docker) repo. Use the ``latest`` tag when building larger images on your Dockerfile.
 ```
 FROM ghcr.io/amitie10g/kali-rolling:latest
-RUN apt-get update && apt-get install -y kali-tools-large && apt-get clean && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y kali-linux-large && apt-get clean && rm -rf /tmp/* /var/tmp/* /var/lib/apt/lists/*
 COPY init/ /etc/my_init.d/
 WORKDIR /root
 ```
@@ -91,13 +93,14 @@ WORKDIR /root
 Then, run:
 
 ```
-docker build --build-arg -t kali-linux:large .
+docker buildx build --build-arg <arg> --target <target> -t kali-linux:large .
 ```
 
-Where build arg,
-* ``KALI_VER`` The kali edition: ``rolling``, ``bleeding-edge``, ``last-release`` or ``experimental`` (if unsure, choose ``rolling``)
+Where ``build-arg``,
+* ``KALI_VER`` The kali edition: ``rolling``, ``bleeding-edge``, ``last-release`` or ``experimental`` (if unsure, leave empty)
 * ``TOOL`` One of the [packages](https://www.kali.org/tools/kali-meta/) starting with ``kali-tools-``
-* ``--target`` The desired target:
+
+And where ``--target``:
   * ``base`` Just the base image
   * ``desktop`` The Desktop (XFCE, without tools) image
   * ``desktop-top10`` The desktop experience plus the top 10 tools
