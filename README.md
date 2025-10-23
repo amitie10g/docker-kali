@@ -119,7 +119,7 @@ Edit the Dockerfile to fit your needs.
   A: Because this eases the process of bringing required services for tools (eg. Postgres for Metasploit).
 
 * Q: Why XRDP instead o VNC?<br>
-  A: a) most of the users uses Windows, and the Remote Desktop client is integrated, and runs seamlessly; and b) performance.
+  A: a) most of the users use Windows for daily use, and the Remote Desktop client is integrated, and also third-party RDP clients are available for *nix/Linux; and b) performance.
 
 ## Licensing
 
